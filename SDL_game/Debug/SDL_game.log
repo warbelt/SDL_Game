@@ -1,4 +1,9 @@
 ﻿  Game.cpp
+  Generating Code...
+  Compiling...
+  main.cpp
+  TextureManager.cpp
+  Generating Code...
   LINK : C:\Users\usuario\Desktop\Dev\Proyectos C\SDL_game\Debug\SDL_game.exe not found or not built by the last incremental link; performing full link
 MSVCRTD.lib(cinitexe.obj) : warning LNK4098: defaultlib 'msvcrt.lib' conflicts with use of other libs; use /NODEFAULTLIB:library
   SDL_game.vcxproj -> C:\Users\usuario\Desktop\Dev\Proyectos C\SDL_game\Debug\SDL_game.exe
