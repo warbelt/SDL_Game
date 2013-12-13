@@ -1,5 +1,10 @@
+#ifndef GAME_H
+#define GAME_H
+
 #include "SDL.h"
 #include "TextureManager.h"
+#include "GameObject.h"
+#include "Player.h"
 
 class Game
 {
@@ -25,4 +30,9 @@ private:
 
 	int m_currentFrame;
 	bool m_bRunning;
+
+	GameObject m_go;
+	Player m_player;
 };
+
+#endif

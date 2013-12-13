@@ -1,3 +1,6 @@
+#ifndef TEXTUREMANAGER_H
+#define TEXTUREMANAGER_H
+
 #include <string>
 #include <iostream>
 #include "SDL.h"
@@ -28,3 +31,5 @@ private:
 };
 
 typedef TextureManager TheTextureManager;
+
+#endif

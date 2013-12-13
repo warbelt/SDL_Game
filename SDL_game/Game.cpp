@@ -5,7 +5,6 @@
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
 	int flags = 0;
-
 	if (fullscreen)
 	{
 		flags = SDL_WINDOW_FULLSCREEN;
@@ -51,10 +50,13 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	std::cout << "init success\n";
 	m_bRunning = true;
 
-	if(!TheTextureManager::Instance()->load("assets/animate-alpha.png", "animate", m_pRenderer))
+	if(!TheTextureManager::Instance()->load("assets/animate-alpha.png", "animate", m_pRenderer))  //Loads texture in TextureManager textureMap ("grabs" the image for later use)
 	{
 		return false;
 	}
+
+	m_go.load(100, 100, 128, 82, "animate");			//Creates a GameObject instance with "animate" as its associated texture
+	m_player.load(300, 300, 128, 82, "animate");		//Same with a Player instance, using the same texture. both objects point to the same texture
 	
 	return true;
 }
@@ -78,15 +80,16 @@ void Game::handleEvents()
 
 void Game::update()
 {
-	m_currentFrame = int((SDL_GetTicks() / 100) %6);
+	m_go.update();
+	m_player.update();
 }
 
 void Game::render()
 {
 	SDL_RenderClear(m_pRenderer); //Clear renderer to the draw color
 	
-	TheTextureManager::Instance()->draw("animate", 0, 0, 128, 82, m_pRenderer);
-	TheTextureManager::Instance()->drawFrame("animate", 100, 100, 128, 82, 1, m_currentFrame, m_pRenderer);
+	m_go.draw(m_pRenderer);
+	m_player.draw(m_pRenderer);
 
 	SDL_RenderPresent(m_pRenderer); //draw to the screen
 }
