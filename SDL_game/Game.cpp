@@ -1,7 +1,7 @@
-#include "game.h"
-#include <SDL_image.h>
-#include <iostream>
- 
+#include "Game.h"
+
+Game* Game::s_pInstance = 0;
+
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
 	int flags = 0;
@@ -55,9 +55,18 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		return false;
 	}
 
-	m_go.load(100, 100, 128, 82, "animate");			//Creates a GameObject instance with "animate" as its associated texture
-	m_player.load(300, 300, 128, 82, "animate");		//Same with a Player instance, using the same texture. both objects point to the same texture
-	
+	//m_go = new GameObject();
+	//m_player = new Player();
+	//m_enemy = new Enemy();
+
+	//m_go->load(100, 100, 128, 82, "animate");			//Creates a GameObject instance with "animate" as its associated texture
+	//m_player->load(300, 300, 128, 82, "animate");		//Same with a Player instance, using the same texture. both objects point to the same texture
+	//m_enemy->load(0, 0, 128, 82, "animate");
+
+	m_gameObjects.push_back(new Player(new LoaderParams(100, 100, 128, 82, "animage")));
+	m_gameObjects.push_back(new Enemy(new LoaderParams(100, 100, 128, 82, "animage")));
+
+
 	return true;
 }
 
@@ -80,16 +89,20 @@ void Game::handleEvents()
 
 void Game::update()
 {
-	m_go.update();
-	m_player.update();
+	for (std::vector<GameObject*>::size_type i = 0; i != m_gameObjects.size(); i++)
+	{
+		m_gameObjects[i]->update();
+	}
 }
 
 void Game::render()
 {
 	SDL_RenderClear(m_pRenderer); //Clear renderer to the draw color
 	
-	m_go.draw(m_pRenderer);
-	m_player.draw(m_pRenderer);
+	for (std::vector<GameObject*>::size_type i = 0; i != m_gameObjects.size(); i++)
+	{
+		m_gameObjects[i]->draw();
+	}
 
 	SDL_RenderPresent(m_pRenderer); //draw to the screen
 }
@@ -101,6 +114,3 @@ void Game::clean()
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_Quit();
 }
-
-
-

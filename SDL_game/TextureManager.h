@@ -3,8 +3,9 @@
 
 #include <string>
 #include <iostream>
-#include "SDL.h"
 #include <map>
+#include <SDL_image.h>
+#include <SDL.h>
 
 class TextureManager 
 {
