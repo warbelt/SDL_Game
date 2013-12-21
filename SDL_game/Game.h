@@ -8,8 +8,7 @@
 
 #include "TextureManager.h"
 #include "GameObject.h"
-#include "Player.h"
-#include "Enemy.h"
+
 
 class Game
 {
@@ -42,7 +41,7 @@ public:
 
 private:
 
-	Game();
+	Game() {}
 	static Game* s_pInstance;
 
 	SDL_Window* m_pWindow;

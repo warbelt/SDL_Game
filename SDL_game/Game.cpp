@@ -1,5 +1,6 @@
 #include "Game.h"
-
+#include "Player.h"
+#include "Enemy.h"
 Game* Game::s_pInstance = 0;
 
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
@@ -63,8 +64,8 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	//m_player->load(300, 300, 128, 82, "animate");		//Same with a Player instance, using the same texture. both objects point to the same texture
 	//m_enemy->load(0, 0, 128, 82, "animate");
 
-	m_gameObjects.push_back(new Player(new LoaderParams(100, 100, 128, 82, "animage")));
-	m_gameObjects.push_back(new Enemy(new LoaderParams(100, 100, 128, 82, "animage")));
+	m_gameObjects.push_back(new Player(new LoaderParams(100, 100, 128, 82, "animate")));
+	m_gameObjects.push_back(new Enemy(new LoaderParams(100, 100, 128, 82, "animate")));
 
 
 	return true;

@@ -16,3 +16,9 @@ void SDLGameObject::draw()
 {
 	TextureManager::Instance()->drawFrame(m_textureID, m_x, m_y, m_width, m_height, m_currentRow, m_currentFrame, Game::Instance()->getRenderer());
 }
+
+void SDLGameObject::clean()
+{}
+
+void SDLGameObject::update()
+{}
