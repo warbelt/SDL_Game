@@ -8,6 +8,16 @@ int main(int argc, char* argv[])
 {
 	Uint32 frameStart, frameTime;
 
+	// This code enables the console while running the program, to see the couts output
+
+	AllocConsole();
+	freopen("CON", "w", stdout);
+
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// !!! Remove before release !!!
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 	std::cout <<"game init attemp... \n";
 	if(TheGame::Instance()->init("Chapter 1", 100, 100, 640, 480, false))
 	{

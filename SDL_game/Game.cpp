@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "Enemy.h"
+
 Game* Game::s_pInstance = 0;
 
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
@@ -47,45 +48,25 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		std::cout << "SDL init fail\n";
 		return false; //sdl coult not initialize
 	}
-
 	std::cout << "init success\n";
 	m_bRunning = true;
+
+	TheInputHandler::Instance()->initialiseJoysticks();
 
 	if(!TheTextureManager::Instance()->load("assets/animate-alpha.png", "animate", m_pRenderer))  //Loads texture in TextureManager textureMap ("grabs" the image for later use)
 	{
 		return false;
 	}
 
-	//m_go = new GameObject();
-	//m_player = new Player();
-	//m_enemy = new Enemy();
-
-	//m_go->load(100, 100, 128, 82, "animate");			//Creates a GameObject instance with "animate" as its associated texture
-	//m_player->load(300, 300, 128, 82, "animate");		//Same with a Player instance, using the same texture. both objects point to the same texture
-	//m_enemy->load(0, 0, 128, 82, "animate");
-
 	m_gameObjects.push_back(new Player(new LoaderParams(100, 100, 128, 82, "animate")));
 	m_gameObjects.push_back(new Enemy(new LoaderParams(100, 100, 128, 82, "animate")));
-
 
 	return true;
 }
 
 void Game::handleEvents()
 {
-	SDL_Event event;
-	if(SDL_PollEvent(&event))
-	{
-		switch (event.type)
-		{
-		case SDL_QUIT:
-			m_bRunning = false;
-		break;
-
-		default:
-		break;
-		}
-	}
+	TheInputHandler::Instance()->update();
 }
 
 void Game::update()
@@ -111,6 +92,9 @@ void Game::render()
 void Game::clean()
 {
 	std::cout << "cleaning game\n";
+
+	TheInputHandler::Instance()->clean();
+
 	SDL_DestroyWindow(m_pWindow);
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_Quit();
