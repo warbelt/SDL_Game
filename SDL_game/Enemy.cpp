@@ -10,7 +10,7 @@ void Enemy::draw()
 
 void Enemy::update()
 {
-	m_acceleration.setX(0.06);
+	m_acceleration.setX(0.0625);
 	m_velocity.setY(1);
 	SDLGameObject::update();
 
