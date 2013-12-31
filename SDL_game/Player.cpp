@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "InputHandler.h"
 
 Player::Player(const LoaderParams* pParams) : SDLGameObject(pParams)
 {}
@@ -15,7 +16,7 @@ void Player::update()
 
 	handleInput();
 
-	m_currentFrame = int((SDL_GetTicks() / 100) % 6);
+	m_currentFrame = int((SDL_GetTicks() / 100) % 5);
 
 	SDLGameObject::update();
 }
@@ -64,14 +65,14 @@ void Player::handleInput()
 		*/
 
 		//Mouse position
-		/*
+		
 		Vector2D* mPos = TheInputHandler::Instance()->getMousePosition();
 
-		m_velocity = (*mPos - m_position) /100;
-		*/
+		m_velocity = (*mPos - m_position) /50;
+		
 
 		//Keyboard arrow keys
-		if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT))
+		/*if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT))
 		{
 			m_velocity.setX(-2);
 		}
@@ -86,7 +87,7 @@ void Player::handleInput()
 		if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_DOWN))
 		{
 			m_velocity.setY(2);
-		}
+		}*/
 	}
 	
 }

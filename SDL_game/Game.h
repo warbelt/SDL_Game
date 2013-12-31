@@ -1,13 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <iostream>
 #include <vector>
 #include <SDL.h>
 #include <SDL_image.h>
-#include "TextureManager.h"
-#include "GameObject.h"
-#include "InputHandler.h"
+class GameObject;
+class GameStateMachine;
 
 class Game
 {
@@ -21,9 +19,10 @@ public:
 	bool running() { return m_bRunning; } //access to private running variable
 	void quit() { m_bRunning = false; }
 
-	SDL_Renderer* getRenderer() const {return m_pRenderer;}
-	
-	static Game* Instance()   //Texture Manager is singleton: Constructor is private so it can only be created by Instance, that assures there is only one TextureManager
+	SDL_Renderer* getRenderer() const { return m_pRenderer; }
+	GameStateMachine* getGameStateMachine() { return m_pGameStateMachine; }
+
+	static Game* Instance()
 	{
 		if(s_pInstance == 0)
 		{
@@ -40,6 +39,7 @@ private:
 	~Game() {}
 
 	static Game* s_pInstance;
+	GameStateMachine* m_pGameStateMachine;
 
 	SDL_Window* m_pWindow;
 	SDL_Renderer* m_pRenderer;

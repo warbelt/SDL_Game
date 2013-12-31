@@ -2,8 +2,8 @@
 #define SDLGAMEOBJECT_H
 
 #include "GameObject.h"
-#include "Game.h"
 #include "Vector2D.h"
+class LoaderParams;
 
 class SDLGameObject : public GameObject
 {
@@ -14,6 +14,10 @@ public:
 	virtual void draw();
 	virtual void update();
 	virtual void clean();
+
+	Vector2D* getPosition() { return &m_position; }
+	int getWidth() {return m_width; }
+	int getHeight() {return m_height; }
 
 protected:
 

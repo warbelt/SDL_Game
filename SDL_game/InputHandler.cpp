@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Vector2D.h"
 #include "InputHandler.h"
 #include "Game.h"
 
@@ -118,6 +119,14 @@ void InputHandler::update()
 		}
 	}
 }
+
+void InputHandler::reset()
+{
+	m_mouseButtonStates[LEFT] = false;
+	m_mouseButtonStates[RIGHT] = false;
+	m_mouseButtonStates[MIDDLE] = false;
+}
+
 //Member accesors
 int InputHandler::xvalue(int joy, int stick)
 {

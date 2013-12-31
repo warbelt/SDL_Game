@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 #include <vector>
-#include "Vector2D.h"
+class Vector2D;
 
 const int m_joystickDeadZone = 10000;
 
@@ -45,6 +45,7 @@ public:
 
 	void update();
 	void clean();
+	void reset();
 
 private:
 	InputHandler();
