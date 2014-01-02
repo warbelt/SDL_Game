@@ -1,6 +1,6 @@
 #include <string>
 #include <iostream>
-#include "MenuState.h"
+#include "MainMenuState.h"
 #include "Game.h"
 #include "TextureManager.h"
 #include "GameObject.h"
@@ -9,10 +9,11 @@
 #include "LoaderParams.h"
 #include "GameStateMachine.h"
 #include "InputHandler.h"
+#include "StateParser.h"
 
-const std::string MenuState::s_menuID = "MENU";
+const std::string MainMenuState::s_menuID = "MENU";
 
-void MenuState::update()
+void MainMenuState::update()
 {
 	for (int i = 0; i < m_gameObjects.size(); i++)
 	{
@@ -21,7 +22,7 @@ void MenuState::update()
 } //Bug--> se actualiza el boton play, esta clicado, se elimina el MenuState y se añade el Play estate ---- se vuelve a esta funcion que ya no existe!! ---
 //Inicializar m_gameObjects para que al crear el nuevo estado, tenga tamaño 0?
 
-void MenuState::render()
+void MainMenuState::render()
 {
 	for (int i = 0; i < m_gameObjects.size(); i++)
 	{
@@ -29,37 +30,34 @@ void MenuState::render()
 	}
 }
 
-bool MenuState::onEnter()
+bool MainMenuState::onEnter()
 {
-	if (!TheTextureManager::Instance()->load("assets/play.png", "playbutton", TheGame::Instance()->getRenderer()))
-	{
-		return false;
-	}
-	if (!TheTextureManager::Instance()->load("assets/exit.png", "exitbutton", TheGame::Instance()->getRenderer()))
-	{
-		return false;
-	}
+	StateParser stateParser;
+	stateParser.parseState("test.xml", s_menuID, &m_gameObjects, &m_textureIDList);
 
-	GameObject* button1 = new MenuButton(new LoaderParams(100, 100, 400, 100, "playbutton"), s_menuToPlay);
-	GameObject* button2 = new MenuButton(new LoaderParams(100, 300, 400, 100, "exitbutton"), s_exitFromMenu);
+	m_callbacks.push_back(0);
+	m_callbacks.push_back(s_menuToPlay);
+	m_callbacks.push_back(s_exitFromMenu);
 
-	m_gameObjects.push_back(button1);
-	m_gameObjects.push_back(button2);
+	setCallbacks(m_callbacks);
 
 	std::cout << "entering MenuState\n";
 	return true;
 }
 
-bool MenuState::onExit()
+bool MainMenuState::onExit()
 {
 	for (int i = 0; i < m_gameObjects.size(); i++)
 	{
 		m_gameObjects[i]->clean();
 	}
-
 	m_gameObjects.clear();
-	TheTextureManager::Instance()->clearFromTextureMap("playbutton");
-	TheTextureManager::Instance()->clearFromTextureMap("exitbutton");
+	
+	for (int i = 0; i < m_textureIDList.size(); i++)
+	{
+		TheTextureManager::Instance()->clearFromTextureMap(m_textureIDList[i]);
+	}
+	m_textureIDList.clear();
 
 	TheInputHandler::Instance()->reset();
 
@@ -67,12 +65,24 @@ bool MenuState::onExit()
 	return true;
 }
 
-void MenuState::s_exitFromMenu()
+void MainMenuState::s_exitFromMenu()
 {
 	TheGame::Instance()->quit();
 }
 
-void MenuState::s_menuToPlay()
+void MainMenuState::s_menuToPlay()
 {
 	TheGame::Instance()->getGameStateMachine()->changeState(new PlayState());
+}
+
+void MainMenuState::setCallbacks(const std::vector<Callback>& callbacks)
+{
+	for (int i = 0; i < m_gameObjects.size(); i++)
+	{
+		if (dynamic_cast<MenuButton*>(m_gameObjects[i]))
+		{
+			MenuButton* pButton = dynamic_cast<MenuButton*> (m_gameObjects[i]);
+			pButton->setCallback(callbacks[pButton->getCallbackID()]);
+		}
+	}
 }

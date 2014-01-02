@@ -1,13 +1,15 @@
 #include <iostream>
 #include "Game.h"
 #include "GameStateMachine.h"
-#include "MenuState.h"
+#include "MainMenuState.h"
 #include "InputHandler.h"
 #include "TextureManager.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "LoaderParams.h"
 #include "PlayState.h"
+#include "MenuButton.h"
+#include "AnimatedGraphic.h"
 
 Game* Game::s_pInstance = 0;
 
@@ -58,18 +60,15 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	std::cout << "init success\n";
 	m_bRunning = true;
 
+	TheGameObjectFactory::Instance()->registerType("MenuButton", new MenuButtonCreator());
+	TheGameObjectFactory::Instance()->registerType("AnimatedGraphic", new AnimatedGraphicCreator());
+	TheGameObjectFactory::Instance()->registerType("Enemy", new EnemyCreator());
+	TheGameObjectFactory::Instance()->registerType("Player", new PlayerCreator());
+
 	m_pGameStateMachine = new GameStateMachine();
-	m_pGameStateMachine->changeState(new MenuState());
+	m_pGameStateMachine->changeState(new MainMenuState());
 
 	TheInputHandler::Instance()->initialiseJoysticks();
-
-	if(!TheTextureManager::Instance()->load("assets/animate-alpha.png", "animate", m_pRenderer))  //Loads texture in TextureManager textureMap ("grabs" the image for later use)
-	{
-		return false;
-	}
-
-	m_gameObjects.push_back(new Player(new LoaderParams(100, 100, 128, 82, "animate")));
-	m_gameObjects.push_back(new Enemy(new LoaderParams(100, 100, 128, 82, "animate")));
 
 	return true;
 }
